@@ -18,7 +18,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 MAX_ROWS = 250_000
 MAX_INPUT_BYTES = 100 * 1024 * 1024
 MAX_COLUMNS = 128

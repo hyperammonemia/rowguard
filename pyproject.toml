@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rowguard-csv"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local CSV validation, duplicate-group quarantine, and offline review reports"
 requires-python = ">=3.10"
 license = "MIT"
@@ -14,10 +14,11 @@ dependencies = []
 
 [project.scripts]
 rowguard = "rowguard:main"
+rowguard-verify = "rowguard_verify:main"
 
 [project.urls]
 Repository = "https://github.com/hyperammonemia/rowguard"
 Demo = "https://hyperammonemia.github.io/rowguard/"
 
 [tool.setuptools]
-py-modules = ["rowguard", "report"]
+py-modules = ["rowguard", "report", "rowguard_verify"]

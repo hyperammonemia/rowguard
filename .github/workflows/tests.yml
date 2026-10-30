@@ -27,11 +27,14 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Reproduce the independent synthetic example
         run: python build_demo.py --check
+      - name: Verify the published results and original sources
+        run: python -m rowguard_verify docs --input data/orders.csv --rules data/rules.json
       - name: Install the local package and test the console entry point
         run: |
           python -m pip install .
           cd /tmp
           rowguard --version
+          rowguard-verify "$GITHUB_WORKSPACE/docs" --input "$GITHUB_WORKSPACE/data/orders.csv" --rules "$GITHUB_WORKSPACE/data/rules.json"
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 10

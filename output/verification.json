@@ -1,0 +1,59 @@
+{
+  "exit_code": 0,
+  "manifest": {
+    "producer_version": "0.2.0",
+    "sha256": "05e9f96ef7ba58520c19299447acbd10ecdb72e104e9a49b444925c009497ab6",
+    "status": "valid"
+  },
+  "notice": "Checks byte consistency against the supplied manifest, not authorship or authenticity. Trust the manifest separately. Only listed outputs and the optional HTML report are covered; omitted source paths remain unchecked.",
+  "outputs": {
+    "clean.csv": {
+      "actual_bytes": 10741,
+      "actual_sha256": "e1c1996b79b43c6f6de6300d3425915c9485395203091ae2ed1903e6358f3f3c",
+      "expected_sha256": "e1c1996b79b43c6f6de6300d3425915c9485395203091ae2ed1903e6358f3f3c",
+      "status": "match"
+    },
+    "index.html": {
+      "actual_bytes": 31253,
+      "actual_sha256": "bef9f61acc518d516f5d3fa287be7cd5726bb3d683badd18cc302bab85284b98",
+      "expected_sha256": "bef9f61acc518d516f5d3fa287be7cd5726bb3d683badd18cc302bab85284b98",
+      "status": "match"
+    },
+    "issues.jsonl": {
+      "actual_bytes": 3260,
+      "actual_sha256": "8ce165e4c9ecdcde95379bb2644ea632629052b80a8c2f7be546bf15e0f82c9e",
+      "expected_sha256": "8ce165e4c9ecdcde95379bb2644ea632629052b80a8c2f7be546bf15e0f82c9e",
+      "status": "match"
+    },
+    "quarantine.csv": {
+      "actual_bytes": 666,
+      "actual_sha256": "137e138fa0a33ad4815e4058f0051598f6ed6b51a996e99637b7676b018f0732",
+      "expected_sha256": "137e138fa0a33ad4815e4058f0051598f6ed6b51a996e99637b7676b018f0732",
+      "status": "match"
+    },
+    "report.json": {
+      "actual_bytes": 7825,
+      "actual_sha256": "74dbf63fd85676cabbdb2b934c8b30b5e105b5c11da2679b688bcc28f0632f3b",
+      "expected_sha256": "74dbf63fd85676cabbdb2b934c8b30b5e105b5c11da2679b688bcc28f0632f3b",
+      "status": "match"
+    }
+  },
+  "schema_version": 1,
+  "sources": {
+    "input": {
+      "actual_bytes": 11345,
+      "actual_sha256": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad",
+      "expected_bytes": 11345,
+      "expected_sha256": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad",
+      "status": "match"
+    },
+    "rules": {
+      "actual_bytes": 718,
+      "actual_sha256": "cb027ba51a6fb4736c99ce9e96d8fc5d4d5340e77b5304ea455da1bb0c722043",
+      "expected_sha256": "cb027ba51a6fb4736c99ce9e96d8fc5d4d5340e77b5304ea455da1bb0c722043",
+      "status": "match"
+    }
+  },
+  "status": "match",
+  "tool_version": "0.2.0"
+}

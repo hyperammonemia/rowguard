@@ -1,8 +1,27 @@
 {
-  "checked_at": "2026-10-30T04:48:41.262353+00:00",
-  "python_tests_passed": 30,
+  "checked_at": "2026-10-30T07:55:27.263071+00:00",
+  "version": "0.2.0",
+  "python_tests_run": 48,
+  "python_tests_passed": 45,
+  "python_tests_skipped": [
+    {
+      "test": "test_fifo_output_is_rejected_without_blocking (test_verify.VerificationTests.test_fifo_output_is_rejected_without_blocking)",
+      "reason": "Named pipes are not available on this platform."
+    },
+    {
+      "test": "test_output_symlinks_including_dangling_are_rejected_without_reading (test_verify.VerificationTests.test_output_symlinks_including_dangling_are_rejected_without_reading)",
+      "reason": "Creating symlinks is unavailable for this account."
+    },
+    {
+      "test": "test_root_symlink_loop_returns_cli_json_error (test_verify.VerificationTests.test_root_symlink_loop_returns_cli_json_error)",
+      "reason": "Creating symlinks is unavailable for this account."
+    }
+  ],
+  "platform": "win32",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
   "core_tests": 24,
   "report_tests": 6,
+  "verification_tests": 18,
   "browser_checks_passed": 12,
   "browser_errors": [],
   "external_requests": [],
@@ -18,14 +37,20 @@
   "installed_cli": {
     "isolated_venv": true,
     "invoked_outside_repository": true,
-    "exit_code": 1,
+    "audit_exit_code": 1,
     "preview_issues": 2,
     "full_issues": 12,
+    "verification_exit_code": 0,
     "output_hashes_verified": true
   },
+  "previous_bundle": {
+    "producer_version": "0.1.0",
+    "saved_archive_verification_exit_code": 0
+  },
   "source_hashes": {
-    "rowguard.py": "fb94509d677cb98c9560fe7f4f8ace977ab38cfb51d2c96d4ab98e6a37a7d265",
+    "rowguard.py": "2e21c8b41b7435f2b7089767cc9796d24c9bee67177978949cf45d3bcf805828",
     "report.py": "2cec38f40ea83cd3acb056f25066925a83144d4c561f640f679d6f0675b86cc8",
+    "rowguard_verify.py": "a7edfa354ec0d926a765f93e0ec641ff8df5462481358541fefb6aff965b9a24",
     "data/orders.csv": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad",
     "data/rules.json": "cb027ba51a6fb4736c99ce9e96d8fc5d4d5340e77b5304ea455da1bb0c722043"
   }

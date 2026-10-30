@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "tool_version": "0.1.0",
+  "tool_version": "0.2.0",
   "input": {
     "name": "orders.csv",
     "sha256": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad",
