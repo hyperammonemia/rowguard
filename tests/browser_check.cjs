@@ -36,6 +36,36 @@ function fixture(value, name) {
   assert.equal(run.status, 0, run.stdout + run.stderr);
   return pathToFileURL(destination).href;
 }
+function auditedFieldFixture(unique, name) {
+  const directory = fs.mkdtempSync(path.join(scratch, name + '-'));
+  const config = {
+    rules: { version: 1, columns: { 'a + b': { required: true }, a: {}, b: {}, note: {} }, unique },
+    rows: [['literal', 'left', 'right', 'line\nkeep'], ['literal', 'other', 'parts', 'second'], ['different', 'left', 'right', 'third'], ['', 'clean', 'unique', 'fourth']]
+  };
+  const input = path.join(directory, 'fixture.json');
+  fs.writeFileSync(input, JSON.stringify(config));
+  const script = [
+    'import csv,json,sys',
+    'from pathlib import Path',
+    'from rowguard import audit,finalize_manifest',
+    'from report import render_report',
+    'source=Path(sys.argv[1]); root=source.parent; spec=json.loads(source.read_text(encoding="utf-8"))',
+    '(root/"rules.json").write_text(json.dumps(spec["rules"]),encoding="utf-8")',
+    'with (root/"input.csv").open("w",encoding="utf-8",newline="") as stream:',
+    '    writer=csv.writer(stream); writer.writerow(list(spec["rules"]["columns"])); writer.writerows(spec["rows"])',
+    'result=audit(root/"input.csv",root/"rules.json",root/"audit")',
+    'render_report(result,root/"audit/index.html")',
+    'finalize_manifest(root/"audit")'
+  ].join('\n');
+  const run = spawnSync('python', ['-c', script, input], { cwd: root, encoding: 'utf8' });
+  assert.equal(run.status, 0, run.stdout + run.stderr);
+  const audit = path.join(directory, 'audit');
+  return {
+    report: JSON.parse(fs.readFileSync(path.join(audit, 'report.json'), 'utf8')),
+    issues: fs.readFileSync(path.join(audit, 'issues.jsonl'), 'utf8').trim().split('\n').map(line => JSON.parse(line)),
+    url: pathToFileURL(path.join(audit, 'index.html')).href
+  };
+}
 async function main() {
   const windowsChrome = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   const executablePath = process.env.BROWSER_PATH || (process.platform === 'win32' && fs.existsSync(windowsChrome) ? windowsChrome : undefined);
@@ -201,6 +231,69 @@ async function main() {
         assert.equal(payload.scope.preview_truncated, true);
         assert.equal(payload.scope.preview_loaded, 0);
         assert.equal(payload.scope.issues_total, report.summary.issues_total);
+      });
+      const colliding = auditedFieldFixture([['a + b'], ['a', 'b']], 'colliding-fields');
+      await check('actual audit keeps literal and composite fields distinct in details and full issues', async () => {
+        const expected = [
+          { row: 1, code: 'duplicate', fields: ['a + b'] },
+          { row: 1, code: 'duplicate', fields: ['a', 'b'] },
+          { row: 2, code: 'duplicate', fields: ['a + b'] },
+          { row: 3, code: 'duplicate', fields: ['a', 'b'] },
+          { row: 4, code: 'required', fields: ['a + b'] }
+        ];
+        const identities = issues => issues.map(({ row, code, fields }) => ({ row, code, fields }));
+        assert.deepEqual(identities(colliding.report.issues_preview), expected);
+        assert.deepEqual(identities(colliding.issues), expected);
+        assert.deepEqual(new Set(colliding.issues.map(issue => issue.column)), new Set(['a + b']));
+        await auxiliary.goto(colliding.url);
+        for (let index = 0; index < expected.length; index++) {
+          await auxiliary.locator('#issue-body .inspect-button').nth(index).click();
+          assert.deepEqual(await auxiliary.locator('.detail-fields .affected dt').allTextContents(), expected[index].fields);
+          assert.equal(await auxiliary.locator('.detail-field-note').count(), 0);
+        }
+        await auxiliary.locator('#issue-body .inspect-button').first().click();
+        assert.deepEqual(await auxiliary.locator('.detail-fields pre').allTextContents(), ['literal', 'left', 'right', 'line\nkeep']);
+      });
+      await check('preview export preserves exact structured fields for colliding labels', async () => {
+        await auxiliary.goto(colliding.url);
+        const all = await exported(auxiliary, 'colliding-fields-all');
+        assert.deepEqual(all.issues_preview, colliding.report.issues_preview);
+        await auxiliary.selectOption('#code-filter', 'required');
+        const filtered = await exported(auxiliary, 'literal-required-field');
+        assert.equal(filtered.issues_preview.length, 1);
+        assert.deepEqual(filtered.issues_preview[0].fields, ['a + b']);
+        assert.equal(filtered.issues_preview[0].data['a + b'], '');
+      });
+      await check('legacy ambiguous duplicate labels show an explanation without guessing fields', async () => {
+        const legacy = JSON.parse(JSON.stringify(colliding.report));
+        legacy.issues_preview.forEach(issue => { delete issue.fields; });
+        await auxiliary.goto(fixture(legacy, 'legacy-ambiguous-fields'));
+        for (let index = 0; index < legacy.issues_preview.length; index++) {
+          const issue = legacy.issues_preview[index];
+          await auxiliary.locator('#issue-body .inspect-button').nth(index).click();
+          if (issue.code === 'duplicate') {
+            assert.deepEqual(await auxiliary.locator('.detail-fields .affected dt').allTextContents(), []);
+            assert.match(await auxiliary.locator('.detail-field-note').textContent(), /旧版报告.*无法确定高亮字段/);
+          } else {
+            assert.deepEqual(await auxiliary.locator('.detail-fields .affected dt').allTextContents(), ['a + b']);
+            assert.equal(await auxiliary.locator('.detail-field-note').count(), 0);
+          }
+        }
+        assert.deepEqual((await exported(auxiliary, 'legacy-fields')).issues_preview, legacy.issues_preview);
+      });
+      await check('legacy unambiguous rules resolve both literal names and composite keys', async () => {
+        for (const [name, fields] of [['literal', ['a + b']], ['composite', ['a', 'b']]]) {
+          const original = auditedFieldFixture([fields], 'legacy-' + name);
+          const legacy = JSON.parse(JSON.stringify(original.report));
+          legacy.issues_preview.forEach(issue => { delete issue.fields; });
+          await auxiliary.goto(fixture(legacy, 'legacy-' + name + '-fields'));
+          for (let index = 0; index < legacy.issues_preview.length; index++) {
+            const issue = legacy.issues_preview[index];
+            await auxiliary.locator('#issue-body .inspect-button').nth(index).click();
+            assert.deepEqual(await auxiliary.locator('.detail-fields .affected dt').allTextContents(), issue.code === 'duplicate' ? fields : ['a + b']);
+            assert.equal(await auxiliary.locator('.detail-field-note').count(), 0);
+          }
+        }
       });
     } finally { await auxiliary.close(); }
     await check('all report interactions finish without script errors or external requests', async () => {

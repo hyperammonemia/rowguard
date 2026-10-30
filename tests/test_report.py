@@ -117,6 +117,21 @@ class ReportTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.write(report)
 
+    def test_structured_issue_fields_round_trip_without_changing_legacy_labels(self):
+        report = example_report()
+        issue = report["issues_preview"][0]
+        issue["fields"] = ["id"]
+        self.assertEqual(self.embedded(self.write(report)), report)
+        del issue["fields"]
+        self.assertEqual(self.embedded(self.write(report)), report)
+
+    def test_invalid_explicit_issue_fields_are_rejected(self):
+        for fields in (None, "id", [], ["missing"], ["id", "id"], ["id", 1]):
+            report = example_report()
+            report["issues_preview"][0]["fields"] = fields
+            with self.subTest(fields=fields), self.assertRaises(ValueError):
+                self.write(report)
+
 
 if __name__ == "__main__":
     unittest.main()

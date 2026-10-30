@@ -1,8 +1,8 @@
 {
-  "checked_at": "2026-10-30T07:55:27.263071+00:00",
-  "version": "0.2.0",
-  "python_tests_run": 48,
-  "python_tests_passed": 45,
+  "checked_at": "2026-10-30T08:13:14.185894+00:00",
+  "version": "0.2.1",
+  "python_tests_run": 53,
+  "python_tests_passed": 50,
   "python_tests_skipped": [
     {
       "test": "test_fifo_output_is_rejected_without_blocking (test_verify.VerificationTests.test_fifo_output_is_rejected_without_blocking)",
@@ -19,10 +19,10 @@
   ],
   "platform": "win32",
   "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
-  "core_tests": 24,
-  "report_tests": 6,
+  "core_tests": 27,
+  "report_tests": 8,
   "verification_tests": 18,
-  "browser_checks_passed": 12,
+  "browser_checks_passed": 16,
   "browser_errors": [],
   "external_requests": [],
   "demo": {
@@ -43,13 +43,22 @@
     "verification_exit_code": 0,
     "output_hashes_verified": true
   },
-  "previous_bundle": {
-    "producer_version": "0.1.0",
-    "saved_archive_verification_exit_code": 0
+  "baseline_comparison": {
+    "commit": "fbd9704fbea4324fc6edd3c4502264a171c9a5ce",
+    "byte_identical_files": [
+      "data/orders.csv",
+      "data/rules.json",
+      "data/expected.json",
+      "docs/clean.csv",
+      "docs/quarantine.csv"
+    ],
+    "all_existing_issue_values_unchanged": true,
+    "demo_summary_unchanged": true,
+    "issues_with_exact_fields": 12
   },
   "source_hashes": {
-    "rowguard.py": "2e21c8b41b7435f2b7089767cc9796d24c9bee67177978949cf45d3bcf805828",
-    "report.py": "2cec38f40ea83cd3acb056f25066925a83144d4c561f640f679d6f0675b86cc8",
+    "rowguard.py": "80ec7ac0c3e69f00f958230757402d6957223e00bc77ec84ec2a6f19bee62c2c",
+    "report.py": "8b8078414edc00e41a014722ac2d8381ffe7aaaafe2436faf64dfe78ced6f972",
     "rowguard_verify.py": "a7edfa354ec0d926a765f93e0ec641ff8df5462481358541fefb6aff965b9a24",
     "data/orders.csv": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad",
     "data/rules.json": "cb027ba51a6fb4736c99ce9e96d8fc5d4d5340e77b5304ea455da1bb0c722043"

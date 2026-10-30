@@ -6,15 +6,15 @@
   },
   "outputs": {
     "clean.csv": "e1c1996b79b43c6f6de6300d3425915c9485395203091ae2ed1903e6358f3f3c",
-    "index.html": "bef9f61acc518d516f5d3fa287be7cd5726bb3d683badd18cc302bab85284b98",
-    "issues.jsonl": "8ce165e4c9ecdcde95379bb2644ea632629052b80a8c2f7be546bf15e0f82c9e",
+    "index.html": "3dceb53c9357f44ef3ad1fbdb347597e911998fc388b03ab357836373779d13f",
+    "issues.jsonl": "d9d7504bb7b0d72f6893684b2bbf807ec5117b266c69eef0b160af18b922bc2e",
     "quarantine.csv": "137e138fa0a33ad4815e4058f0051598f6ed6b51a996e99637b7676b018f0732",
-    "report.json": "74dbf63fd85676cabbdb2b934c8b30b5e105b5c11da2679b688bcc28f0632f3b"
+    "report.json": "e1e70177397fcd867953d7e8cc49b06f277753e5b7a491394bbb795b974864b4"
   },
   "rules": {
     "name": "rules.json",
     "sha256": "cb027ba51a6fb4736c99ce9e96d8fc5d4d5340e77b5304ea455da1bb0c722043"
   },
   "schema_version": 1,
-  "tool_version": "0.2.0"
+  "tool_version": "0.2.1"
 }

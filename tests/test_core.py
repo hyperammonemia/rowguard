@@ -180,6 +180,48 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(report["summary"]["issues_total"], 4)
         self.assertEqual(report["summary"]["rows_quarantined"], 2)
 
+    def test_issue_fields_keep_literal_separator_names(self):
+        self.write_rules({"a + b": {"required": True}, "a": {}, "b": {}}, [["a + b"]])
+        rows = [["same", "A", "B"], ["same", "C", "D"], ["", "E", "F"]]
+        self.write_csv(["a + b", "a", "b"], rows)
+        report, output = self.run_audit()
+        issues = self.read_issues(output)
+        self.assertEqual([issue["fields"] for issue in issues], [["a + b"]] * 3)
+        self.assertEqual([issue["code"] for issue in issues], ["duplicate", "duplicate", "required"])
+        self.assertEqual(report["issues_preview"], issues)
+        self.assertEqual(self.read_csv(output / "quarantine.csv")[1:], rows)
+
+    def test_colliding_duplicate_labels_keep_distinct_fields_in_full_and_preview(self):
+        self.write_rules({"a + b": {}, "a": {}, "b": {}}, [["a + b"], ["a", "b"]])
+        rows = [["literal", "x", "y"], ["literal", "x", "y"], ["other", "u", "v"]]
+        self.write_csv(["a + b", "a", "b"], rows)
+        before = self.source.read_bytes()
+        report, output = self.run_audit(preview_limit=1)
+        issues = self.read_issues(output)
+        self.assertEqual([issue["row"] for issue in issues], [1, 1, 2, 2])
+        self.assertEqual([issue["column"] for issue in issues], ["a + b"] * 4)
+        self.assertEqual([issue["fields"] for issue in issues], [["a + b"], ["a", "b"]] * 2)
+        self.assertEqual(report["issues_preview"], issues[:1])
+        self.assertEqual(report["summary"]["issues_total"], 4)
+        self.assertEqual(report["summary"]["rows_quarantined"], 2)
+        self.assertEqual(self.read_csv(output / "clean.csv")[1:], rows[2:])
+        self.assertEqual(self.read_csv(output / "quarantine.csv")[1:], rows[:2])
+        self.assertEqual(self.source.read_bytes(), before)
+
+    def test_composite_fields_preserve_rule_order_and_special_names(self):
+        columns = ["x + y", 'quote"field', "中文\n字段"]
+        fields = [columns[2], columns[0]]
+        self.write_rules(dict.fromkeys(columns, {}), [fields])
+        rows = [[" 001 ", '"raw"', "first\nsecond"], [" 001 ", "different", "first\nsecond"]]
+        self.write_csv(columns, rows)
+        report, output = self.run_audit()
+        issues = self.read_issues(output)
+        self.assertEqual([issue["fields"] for issue in issues], [fields, fields])
+        self.assertEqual([issue["column"] for issue in issues], [" + ".join(fields)] * 2)
+        self.assertEqual([issue["data"] for issue in issues], [dict(zip(columns, row)) for row in rows])
+        self.assertEqual(report["issues_preview"], issues)
+        self.assertEqual(self.read_csv(output / "quarantine.csv"), [columns] + rows)
+
     def test_multiline_bom_utf8_provenance_and_column_order(self):
         self.write_rules({"id": {"required": True}, "note": {}}, [["id"]])
         raw = b'\xef\xbb\xbfnote,id\r\n"caf\xc3\xa9\r\nsecond line",A\r\n"<tag> & text",A\r\n'

@@ -18,7 +18,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 MAX_ROWS = 250_000
 MAX_INPUT_BYTES = 100 * 1024 * 1024
 MAX_COLUMNS = 128
@@ -209,7 +209,7 @@ def _create_database(connection: sqlite3.Connection) -> None:
         """
         CREATE TABLE records (id INTEGER PRIMARY KEY, line INTEGER, data TEXT);
         CREATE TABLE issues (
-            id INTEGER PRIMARY KEY, row_id INTEGER, column_name TEXT,
+            id INTEGER PRIMARY KEY, row_id INTEGER, column_name TEXT, fields TEXT,
             code TEXT, value TEXT, message TEXT
         );
         CREATE INDEX issue_rows ON issues (row_id);
@@ -256,9 +256,9 @@ def _ingest(
                 for name, value in data.items():
                     for code, message in _validate_cell(value, rules["columns"][name]):
                         connection.execute(
-                            "INSERT INTO issues (row_id, column_name, code, value, message) "
-                            "VALUES (?, ?, ?, ?, ?)",
-                            (count, name, code, value, message),
+                            "INSERT INTO issues (row_id, column_name, fields, code, value, message) "
+                            "VALUES (?, ?, ?, ?, ?, ?)",
+                            (count, name, _json_text([name]), code, value, message),
                         )
                 for rule_no, fields in enumerate(rules["unique"]):
                     values = [data[field] for field in fields]
@@ -290,9 +290,9 @@ def _find_duplicates(connection: sqlite3.Connection, rules: dict) -> None:
         values = json.loads(key)
         value = values[0] if len(values) == 1 else key
         connection.execute(
-            "INSERT INTO issues (row_id, column_name, code, value, message) "
-            "VALUES (?, ?, ?, ?, ?)",
-            (row_id, label, "duplicate", value, f"Duplicate key for {label}."),
+            "INSERT INTO issues (row_id, column_name, fields, code, value, message) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (row_id, label, _json_text(fields), "duplicate", value, f"Duplicate key for {label}."),
         )
 
 
@@ -304,8 +304,8 @@ def _export(
         connection.execute("SELECT code, COUNT(*) FROM issues GROUP BY code ORDER BY code")
     )
     with (stage / "issues.jsonl").open("w", encoding="utf-8", newline="\n") as stream:
-        for row, line, column, code, value, message, data in connection.execute(
-            "SELECT r.id, r.line, i.column_name, i.code, i.value, i.message, r.data "
+        for row, line, column, fields, code, value, message, data in connection.execute(
+            "SELECT r.id, r.line, i.column_name, i.fields, i.code, i.value, i.message, r.data "
             "FROM issues AS i JOIN records AS r ON i.row_id = r.id "
             "ORDER BY r.id, i.id"
         ):
@@ -313,6 +313,7 @@ def _export(
                 "row": row,
                 "line": line,
                 "column": column,
+                "fields": json.loads(fields),
                 "code": code,
                 "value": value,
                 "message": message,

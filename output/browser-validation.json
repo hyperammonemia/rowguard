@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-30T07:51:43.688Z",
+  "checked_at": "2026-10-30T08:12:03.734Z",
   "browser": "133.0.6943.59",
   "checks": [
     {
@@ -44,6 +44,22 @@
     },
     {
       "name": "neutral clean reports and zero-preview reports do not invent issues or demo labels",
+      "passed": true
+    },
+    {
+      "name": "actual audit keeps literal and composite fields distinct in details and full issues",
+      "passed": true
+    },
+    {
+      "name": "preview export preserves exact structured fields for colliding labels",
+      "passed": true
+    },
+    {
+      "name": "legacy ambiguous duplicate labels show an explanation without guessing fields",
+      "passed": true
+    },
+    {
+      "name": "legacy unambiguous rules resolve both literal names and composite keys",
       "passed": true
     },
     {

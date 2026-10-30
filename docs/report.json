@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "tool_version": "0.2.0",
+  "tool_version": "0.2.1",
   "input": {
     "name": "orders.csv",
     "sha256": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad",
@@ -86,6 +86,9 @@
       "row": 5,
       "line": 6,
       "column": "order_id",
+      "fields": [
+        "order_id"
+      ],
       "code": "required",
       "value": "",
       "message": "A value is required.",
@@ -103,6 +106,9 @@
       "row": 18,
       "line": 19,
       "column": "quantity",
+      "fields": [
+        "quantity"
+      ],
       "code": "type",
       "value": "2.5",
       "message": "Expected an integer with ASCII digits.",
@@ -120,6 +126,9 @@
       "row": 29,
       "line": 30,
       "column": "unit_price",
+      "fields": [
+        "unit_price"
+      ],
       "code": "min",
       "value": "-4.50",
       "message": "Value must be at least 0.",
@@ -137,6 +146,9 @@
       "row": 42,
       "line": 44,
       "column": "ordered_on",
+      "fields": [
+        "ordered_on"
+      ],
       "code": "type",
       "value": "2026-02-30",
       "message": "Expected a valid date in YYYY-MM-DD format.",
@@ -154,6 +166,9 @@
       "row": 57,
       "line": 59,
       "column": "status",
+      "fields": [
+        "status"
+      ],
       "code": "choices",
       "value": "shipping",
       "message": "Value is not one of the allowed choices.",
@@ -171,6 +186,9 @@
       "row": 70,
       "line": 73,
       "column": "customer_id",
+      "fields": [
+        "customer_id"
+      ],
       "code": "required",
       "value": "   ",
       "message": "A value is required.",
@@ -188,6 +206,9 @@
       "row": 88,
       "line": 91,
       "column": "unit_price",
+      "fields": [
+        "unit_price"
+      ],
       "code": "type",
       "value": "NaN",
       "message": "Expected a finite decimal number.",
@@ -205,6 +226,9 @@
       "row": 103,
       "line": 107,
       "column": "quantity",
+      "fields": [
+        "quantity"
+      ],
       "code": "max",
       "value": "101",
       "message": "Value must be at most 100.",
@@ -222,6 +246,9 @@
       "row": 133,
       "line": 138,
       "column": "order_id",
+      "fields": [
+        "order_id"
+      ],
       "code": "duplicate",
       "value": "ORD-0144",
       "message": "Duplicate key for order_id.",
@@ -239,6 +266,9 @@
       "row": 144,
       "line": 149,
       "column": "order_id",
+      "fields": [
+        "order_id"
+      ],
       "code": "duplicate",
       "value": "ORD-0144",
       "message": "Duplicate key for order_id.",
@@ -256,6 +286,9 @@
       "row": 180,
       "line": 186,
       "column": "quantity",
+      "fields": [
+        "quantity"
+      ],
       "code": "min",
       "value": "0",
       "message": "Value must be at least 1.",
@@ -273,6 +306,9 @@
       "row": 180,
       "line": 186,
       "column": "status",
+      "fields": [
+        "status"
+      ],
       "code": "choices",
       "value": "queued",
       "message": "Value is not one of the allowed choices.",

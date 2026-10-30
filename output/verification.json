@@ -1,8 +1,8 @@
 {
   "exit_code": 0,
   "manifest": {
-    "producer_version": "0.2.0",
-    "sha256": "05e9f96ef7ba58520c19299447acbd10ecdb72e104e9a49b444925c009497ab6",
+    "producer_version": "0.2.1",
+    "sha256": "ac5ca8719c149983872d3d3667b548a05e48e6603fe1f0a29479d24ff0c83ae6",
     "status": "valid"
   },
   "notice": "Checks byte consistency against the supplied manifest, not authorship or authenticity. Trust the manifest separately. Only listed outputs and the optional HTML report are covered; omitted source paths remain unchecked.",
@@ -14,15 +14,15 @@
       "status": "match"
     },
     "index.html": {
-      "actual_bytes": 31253,
-      "actual_sha256": "bef9f61acc518d516f5d3fa287be7cd5726bb3d683badd18cc302bab85284b98",
-      "expected_sha256": "bef9f61acc518d516f5d3fa287be7cd5726bb3d683badd18cc302bab85284b98",
+      "actual_bytes": 32331,
+      "actual_sha256": "3dceb53c9357f44ef3ad1fbdb347597e911998fc388b03ab357836373779d13f",
+      "expected_sha256": "3dceb53c9357f44ef3ad1fbdb347597e911998fc388b03ab357836373779d13f",
       "status": "match"
     },
     "issues.jsonl": {
-      "actual_bytes": 3260,
-      "actual_sha256": "8ce165e4c9ecdcde95379bb2644ea632629052b80a8c2f7be546bf15e0f82c9e",
-      "expected_sha256": "8ce165e4c9ecdcde95379bb2644ea632629052b80a8c2f7be546bf15e0f82c9e",
+      "actual_bytes": 3529,
+      "actual_sha256": "d9d7504bb7b0d72f6893684b2bbf807ec5117b266c69eef0b160af18b922bc2e",
+      "expected_sha256": "d9d7504bb7b0d72f6893684b2bbf807ec5117b266c69eef0b160af18b922bc2e",
       "status": "match"
     },
     "quarantine.csv": {
@@ -32,9 +32,9 @@
       "status": "match"
     },
     "report.json": {
-      "actual_bytes": 7825,
-      "actual_sha256": "74dbf63fd85676cabbdb2b934c8b30b5e105b5c11da2679b688bcc28f0632f3b",
-      "expected_sha256": "74dbf63fd85676cabbdb2b934c8b30b5e105b5c11da2679b688bcc28f0632f3b",
+      "actual_bytes": 8382,
+      "actual_sha256": "e1e70177397fcd867953d7e8cc49b06f277753e5b7a491394bbb795b974864b4",
+      "expected_sha256": "e1e70177397fcd867953d7e8cc49b06f277753e5b7a491394bbb795b974864b4",
       "status": "match"
     }
   },
@@ -55,5 +55,5 @@
     }
   },
   "status": "match",
-  "tool_version": "0.2.0"
+  "tool_version": "0.2.1"
 }

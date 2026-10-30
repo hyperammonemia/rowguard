@@ -27,6 +27,16 @@ def render_report(report: dict, output_path: str | Path) -> Path:
         raise ValueError("Issue preview exceeds its declared scope")
     if not isinstance(report["columns"], list) or not all(isinstance(value, str) for value in report["columns"]):
         raise ValueError("Report columns must be a list of strings")
+    for issue in issues:
+        if "fields" in issue:
+            fields = issue["fields"]
+            if (
+                not isinstance(fields, list)
+                or not fields
+                or any(not isinstance(field, str) or field not in report["columns"] for field in fields)
+                or len(set(fields)) != len(fields)
+            ):
+                raise ValueError("Issue fields must be a nonempty list of distinct report columns")
     encoded = json.dumps(report, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
     encoded = encoded.replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
     html = _HTML.replace("/*__REPORT__*/", encoded, 1)
@@ -99,15 +109,25 @@ _HTML = r'''<!doctype html>
     const link = document.createElement('a'); link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
   }
+  function affectedFields(issue) {
+    if (Array.isArray(issue.fields)) return issue.fields;
+    if (issue.code !== 'duplicate') return report.columns.includes(issue.column) ? [issue.column] : null;
+    const unique = report.rules?.definition?.unique;
+    if (!Array.isArray(unique)) return null;
+    const matches = unique.filter(fields => Array.isArray(fields) && fields.length && fields.every(field => typeof field === 'string' && report.columns.includes(field)) && new Set(fields).size === fields.length && fields.join(' + ') === issue.column);
+    return matches.length === 1 ? matches[0] : null;
+  }
   function renderDetail(issue) {
     const content = $('detail-content'); content.replaceChildren();
     $('detail-heading').textContent = issue ? `原始记录 #${issue.row}` : '原始记录';
     if (!issue) { content.append(element('p', 'detail-empty', issues.length ? '当前筛选没有问题记录。' : '本页没有载入问题明细。')); return; }
     content.append(element('div', 'detail-position', `CSV 起始物理行 ${issue.line} · 字段 ${issue.column}`));
     content.append(element('p', 'detail-message', issue.message));
+    const affected = affectedFields(issue);
+    if (affected === null) content.append(element('p', 'detail-field-note', '旧版报告缺少明确的字段列表，无法确定高亮字段；请核对本次规则。'));
     const fields = element('dl', 'detail-fields');
     for (const column of report.columns) {
-      const entry = element('div', issue.column.split(' + ').includes(column) ? 'affected' : '');
+      const entry = element('div', affected?.includes(column) ? 'affected' : '');
       entry.append(element('dt', '', column));
       const value = issue.data[column], cell = element('dd');
       cell.append(element('pre', value === '' ? 'blank-value' : '', displayValue(value))); entry.append(cell); fields.append(entry);
