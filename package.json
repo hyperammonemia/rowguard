@@ -1,0 +1,9 @@
+{
+  "name": "rowguard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser checks for the standalone RowGuard audit report",
+  "scripts": {"test:ui": "node tests/browser_check.cjs"},
+  "devDependencies": {"playwright": "1.64.1"},
+  "engines": {"node": ">=20"}
+}

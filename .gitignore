@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.qa/
+.tmp/
+node_modules/
+runs/
+build/
+dist/
+*.egg-info/
+*.zip

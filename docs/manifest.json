@@ -1,0 +1,20 @@
+{
+  "input": {
+    "bytes": 11345,
+    "name": "orders.csv",
+    "sha256": "8e24155add80b604559843d2e874b8e58916c3955a084536a265c0c79e1b72ad"
+  },
+  "outputs": {
+    "clean.csv": "e1c1996b79b43c6f6de6300d3425915c9485395203091ae2ed1903e6358f3f3c",
+    "index.html": "6902fcee3e17579a6b0c8557ebca92bfaa6399855f1bcdf75efb2a5f33be6a1c",
+    "issues.jsonl": "8ce165e4c9ecdcde95379bb2644ea632629052b80a8c2f7be546bf15e0f82c9e",
+    "quarantine.csv": "137e138fa0a33ad4815e4058f0051598f6ed6b51a996e99637b7676b018f0732",
+    "report.json": "74ee5aaf6af0505617095b81b64afd7206355736bc14c5735a4fc0e35069b953"
+  },
+  "rules": {
+    "name": "rules.json",
+    "sha256": "cb027ba51a6fb4736c99ce9e96d8fc5d4d5340e77b5304ea455da1bb0c722043"
+  },
+  "schema_version": 1,
+  "tool_version": "0.1.0"
+}

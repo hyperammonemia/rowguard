@@ -1,0 +1,60 @@
+{
+  "checked_at": "2026-10-30T04:47:38.935Z",
+  "browser": "133.0.6943.59",
+  "checks": [
+    {
+      "name": "loads the actual audit totals, source hashes and synthetic demo label offline",
+      "passed": true
+    },
+    {
+      "name": "code filters match only loaded preview issues",
+      "passed": true
+    },
+    {
+      "name": "raw record details preserve source column order, values and physical line",
+      "passed": true
+    },
+    {
+      "name": "combined search and code filter download has explicit preview scope and original values",
+      "passed": true
+    },
+    {
+      "name": "empty search exports an empty preview without changing full totals",
+      "passed": true
+    },
+    {
+      "name": "result file links point to existing same-directory audit outputs",
+      "passed": true
+    },
+    {
+      "name": "mobile layouts fit 390px and 320px with accessible filters and raw details",
+      "passed": true
+    },
+    {
+      "name": "untrusted CSV text remains literal in details, names, rules and exported JSON",
+      "passed": true
+    },
+    {
+      "name": "rule display and download preserve the original decimal text",
+      "passed": true
+    },
+    {
+      "name": "truncated preview advertises its cap and never exports missing issues as complete",
+      "passed": true
+    },
+    {
+      "name": "neutral clean reports and zero-preview reports do not invent issues or demo labels",
+      "passed": true
+    },
+    {
+      "name": "all report interactions finish without script errors or external requests",
+      "passed": true
+    }
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "screenshots": [
+    "desktop-preview.png",
+    "mobile-preview.png"
+  ]
+}

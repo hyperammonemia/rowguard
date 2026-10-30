@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+*.csv whitespace=cr-at-eol
+data/orders.csv -text
+output/*.csv -text
+docs/*.csv -text

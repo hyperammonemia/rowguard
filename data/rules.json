@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "columns": {
+    "order_id": {
+      "type": "string",
+      "required": true
+    },
+    "customer_id": {
+      "type": "string",
+      "required": true
+    },
+    "quantity": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 100
+    },
+    "unit_price": {
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "max": 10000
+    },
+    "ordered_on": {
+      "type": "date",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "choices": [
+        "paid",
+        "pending",
+        "refunded"
+      ]
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "unique": [
+    [
+      "order_id"
+    ]
+  ]
+}

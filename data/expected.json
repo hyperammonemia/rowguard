@@ -1,0 +1,63 @@
+{
+  "synthetic": true,
+  "description": "200 deterministic synthetic orders with deliberately inserted errors; no real customer or transaction data.",
+  "rows_total": 200,
+  "rows_clean": 189,
+  "rows_quarantined": 11,
+  "issues_total": 12,
+  "by_code": {
+    "required": 2,
+    "type": 3,
+    "min": 2,
+    "max": 1,
+    "choices": 2,
+    "duplicate": 2
+  },
+  "quarantined_records": [
+    5,
+    18,
+    29,
+    42,
+    57,
+    70,
+    88,
+    103,
+    133,
+    144,
+    180
+  ],
+  "injected_changes": {
+    "5": {
+      "order_id": ""
+    },
+    "18": {
+      "quantity": "2.5"
+    },
+    "29": {
+      "unit_price": "-4.50"
+    },
+    "42": {
+      "ordered_on": "2026-02-30"
+    },
+    "57": {
+      "status": "shipping"
+    },
+    "70": {
+      "customer_id": "   "
+    },
+    "88": {
+      "unit_price": "NaN"
+    },
+    "103": {
+      "quantity": "101"
+    },
+    "133": {
+      "order_id": "ORD-0144"
+    },
+    "180": {
+      "quantity": "0",
+      "status": "queued"
+    }
+  },
+  "duplicate_explanation": "Record 133 copies the order_id of record 144; both members must be quarantined."
+}
